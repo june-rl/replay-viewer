@@ -4,3 +4,5 @@ export const mapSize = {
     length: 10240,
     height: 2044
 }
+
+export const scaleFactor = 1000;

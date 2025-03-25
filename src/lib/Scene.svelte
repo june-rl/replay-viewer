@@ -1,7 +1,7 @@
 <script>
     import Pitch from "$lib/Pitch.svelte";
     import { T } from "@threlte/core";
-    import {OrbitControls, Gizmo, Grid} from "@threlte/extras";
+    import {OrbitControls, Grid} from "@threlte/extras";
     import Actor from "$lib/Actor.svelte";
 </script>
 
@@ -19,10 +19,7 @@
 <Actor></Actor>
 
 <Grid
-        position.y={-1 * 0.5}
         cellColor="#ffffff"
         sectionColor="#ffffff"
         sectionThickness={0}
-        fadeDistance={25}
-        cellSize={2}
 />
