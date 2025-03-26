@@ -2,9 +2,9 @@
     import { T } from '@threlte/core'
     import {mapSize, scaleFactor} from "$lib/values.js";
 
-    const width = mapSize.width/scaleFactor;
-    const height = mapSize.height/scaleFactor;
-    const length = mapSize.length/scaleFactor;
+    const width = mapSize.width*2/scaleFactor;
+    const height = mapSize.height*2/scaleFactor;
+    const length = mapSize.length*2/scaleFactor;
 
 </script>
 

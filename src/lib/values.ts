@@ -5,4 +5,13 @@ export const mapSize = {
     height: 2044
 }
 
+export const carHitbox = {
+    length: 118.01,
+    width: 84.2,
+    height: 36.16
+}
+
+export const ballRadius = 91.25;
+
 export const scaleFactor = 1000;
+
