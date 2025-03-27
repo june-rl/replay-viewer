@@ -21,6 +21,9 @@
     $effect(() => {
         setCurrentFrame(sliderValue);
     })
+    $effect(() => {
+        sliderValue = getCurrentFrame();
+    })
 
     let fileInputValue: string = $state("");
 

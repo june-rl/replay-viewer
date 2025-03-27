@@ -7,3 +7,13 @@ export const setCurrentFrame = (frame: number) => {
 export const getCurrentFrame = () => {
     return currentFrame;
 }
+
+let focus: number | null = $state(null);
+
+export const setFocus = (actorId: number) => {
+    focus = actorId;
+}
+
+export const getFocus = () => {
+    return focus;
+}

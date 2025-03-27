@@ -11,7 +11,13 @@ export const carHitbox = {
     height: 36.16
 }
 
+export const goalSize = {
+    depth: 880,
+    height: 642.775,
+    width: 892.755*2
+}
+
 export const ballRadius = 91.25;
 
-export const scaleFactor = 1000;
+export const scaleFactor = 400;
 

@@ -1,11 +1,12 @@
 <script lang="ts">
     import Pitch from "$lib/Pitch.svelte";
     import { T } from "@threlte/core";
-    import {OrbitControls, Grid} from "@threlte/extras";
+    import {OrbitControls, interactivity} from "@threlte/extras";
     import Car from "$lib/Car.svelte";
     import {Replay} from "$lib/Replay.js";
     import Ball from "$lib/Ball.svelte";
     import {getCurrentFrame} from "$lib/state.svelte";
+    interactivity()
 
     let { replay }: { replay: Replay } = $props();
 
@@ -18,16 +19,12 @@
         ballActors = replay.findActorsByObjectName("Archetypes.Ball.Ball_Default")
     })
 
-    $effect(() => {
-        console.log(carActors)
-    })
-
 </script>
 
 
 <T.PerspectiveCamera
         makeDefault
-        fov={50}
+        fov={45}
         position={[10, 5, 10]}
         lookAt.y={0.5}
 >
@@ -38,25 +35,17 @@
 <!--<Ball position={{x:0, y:0, z:0}} rotation={{w:0, x:0, y:0, z:0}}></Ball>-->
 
 {#key carActors}
-    {#each carActors as [actorId, objectMap]}
-        <Car objects={objectMap}></Car>
+    {#each carActors as [actorId, objects]}
+        <Car {actorId} {objects}></Car>
     {/each}
 {/key}
 
 {#key ballActors}
-    {#each ballActors as [actorId, objectMap]}
-        <Ball
-                position={objectMap.get("TAGame.RBActor_TA:ReplicatedRBState")?.get('RigidBody').location}
-                rotation={objectMap.get("TAGame.RBActor_TA:ReplicatedRBState")?.get('RigidBody').rotation}
-        ></Ball>
+    {#each ballActors as [actorId, objects]}
+        <Ball {actorId} {objects}></Ball>
     {/each}
 {/key}
 
 
 
 
-<Grid
-        cellColor="#ffffff"
-        sectionColor="#ffffff"
-        sectionThickness={0}
-/>
