@@ -42,22 +42,6 @@
         }
     })
 
-    // $effect(() => {
-    //     if (replay) {
-    //         replay.executeFrames(getCurrentFrame());
-    //     }
-    // })
-
-    // onMount(() => {
-    //     setInterval(() => {
-    //         if (replay) {
-    //             currentFrame = (currentFrame + 1) % replay.networkFrames.length;
-    //         }
-    //     }, 1000/30)
-    // })
-
-
-
 </script>
 
 
@@ -66,8 +50,10 @@
 
 {#if replay}
     <div>
-        <span>Frame: {getCurrentFrame()}</span><br>
+        <span>Frame: {getCurrentFrame()}</span>
+        <br>
         <input type="range" min="0" max={replay.networkFrames.length} bind:value={sliderValue} />
+        <br>
         <button onclick={() => setCurrentFrame(getCurrentFrame() - 1)}>Previous</button>
         <button onclick={() => setCurrentFrame(getCurrentFrame() + 1)}>Next</button>
 
@@ -76,6 +62,7 @@
         {:else}
             <button onclick={() => playing = true}>Play</button>
         {/if}
+        <button onclick={() => console.log(replay?.actors)}>Log actors</button>
 
 
     </div>
