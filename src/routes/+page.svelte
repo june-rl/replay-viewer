@@ -2,7 +2,6 @@
     import {Canvas} from "@threlte/core";
     import Scene from "$lib/Scene.svelte";
     import {createReplayFromJSON, Replay} from "$lib/Replay.js";
-    import {onMount} from "svelte";
     import {getCurrentFrame, setCurrentFrame} from "$lib/state.svelte";
 
     let replayFiles: FileList | null = $state(null);
@@ -66,13 +65,15 @@
 
 
     </div>
+    <div>
+        <Canvas>
+            <Scene {replay}></Scene>
+        </Canvas>
+    </div>
+
+
 
 {/if}
 
-<Canvas>
 
-    {#if replay}
-            <Scene replay={replay}></Scene>
-    {/if}
-</Canvas>
 
