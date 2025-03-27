@@ -3,12 +3,26 @@
     import Scene from "$lib/Scene.svelte";
     import {createReplayFromJSON, Replay} from "$lib/Replay.js";
     import {onMount} from "svelte";
+    import {getCurrentFrame, setCurrentFrame} from "$lib/state.svelte";
 
-    let fileInputValue: string = $state("");
     let replayFiles: FileList | null = $state(null);
     let replay: Replay | null = $state(null);
 
-    let currentFrame = $state(0);
+    let playing = $state(false);
+
+    setInterval(() => {
+        if(playing){
+            setCurrentFrame(getCurrentFrame() + 1);
+        }
+    }, 1000/30)
+
+    let sliderValue = $state(0);
+
+    $effect(() => {
+        setCurrentFrame(sliderValue);
+    })
+
+    let fileInputValue: string = $state("");
 
     $effect(() => {
         if (fileInputValue === "") {
@@ -25,11 +39,11 @@
         }
     })
 
-    $effect(() => {
-        if (replay) {
-            replay.executeFrames(currentFrame);
-        }
-    })
+    // $effect(() => {
+    //     if (replay) {
+    //         replay.executeFrames(getCurrentFrame());
+    //     }
+    // })
 
     // onMount(() => {
     //     setInterval(() => {
@@ -48,17 +62,27 @@
 <button onclick={() => fileInputValue = ""}>Clear</button>
 
 {#if replay}
-    <span>Frame: {currentFrame}</span>
+    <div>
+        <span>Frame: {getCurrentFrame()}</span><br>
+        <input type="range" min="0" max={replay.networkFrames.length} bind:value={sliderValue} />
+        <button onclick={() => setCurrentFrame(getCurrentFrame() - 1)}>Previous</button>
+        <button onclick={() => setCurrentFrame(getCurrentFrame() + 1)}>Next</button>
 
-        <input type="range" min="0" max={replay.networkFrames.length} bind:value={currentFrame} />
+        {#if playing}
+            <button onclick={() => playing = false}>Pause</button>
+        {:else}
+            <button onclick={() => playing = true}>Play</button>
+        {/if}
+
+
+    </div>
+
 {/if}
 
 <Canvas>
 
     {#if replay}
-        {#key currentFrame}
             <Scene replay={replay}></Scene>
-        {/key}
     {/if}
 </Canvas>
 

@@ -10,14 +10,14 @@ type NetworkFrame = {
     time: number,
     delta: number,
     new_actors: NetworkFrameActor[],
-    deleted_actors: NetworkFrameActor[],
+    deleted_actors: number[],
     updated_actors: NetworkFrameActor[]
 }
 
 
 
 export class Replay {
-    actors: Map<number, Map<number, Map<string, any>>> = new Map();
+    actors: Map<number, Map<string, Map<string, any>>> = new Map();
     actorNameId: Map<number, number> = new Map();
     networkFrames: NetworkFrame[] = []
     objectNames: string[] = []
@@ -39,28 +39,27 @@ export class Replay {
         if(!this.actors.has(actorId)) {
             this.actors.set(actorId, new Map());
         }
-        if(!this.actors.get(actorId)?.has(objectId)) {
-            this.actors.get(actorId)?.set(objectId, new Map());
+
+        const objectName = this.objectNames[objectId];
+
+        if(!this.actors.get(actorId)?.has(objectName)) {
+            this.actors.get(actorId)?.set(objectName, new Map());
         }
 
-        this.actors.get(actorId)?.get(objectId)?.set(name, value);
+        this.actors.get(actorId)?.get(objectName)?.set(name, value);
     }
 
     getActor (actorId: number) {
         return this.actors.get(actorId);
     }
 
-    getObjectName (objectId: number) {
-        return this.objectNames[objectId];
-    }
-
     getObjectIdFromName (objectName: string){
         return this.objectNames.indexOf(objectName);
     }
 
-    findActorsByObjectId (objectId: number) {
+    findActorsByObjectName (objectName: string) {
         return new Map([...this.actors].filter(([actor_id, object_map]) => {
-            return object_map.has(objectId);
+            return object_map.has(objectName);
         }));
     }
 
@@ -72,7 +71,7 @@ export class Replay {
             this.actors.set(actor.actor_id, new Map());
 
             if(actor.object_id){
-                this.actors.get(actor.actor_id)?.set(actor.object_id, new Map());
+                this.actors.get(actor.actor_id)?.set(this.objectNames[actor.object_id], new Map());
             }
 
             if(actor.name_id){
@@ -83,8 +82,8 @@ export class Replay {
 
         // deleted actors
         for (const actor of frame.deleted_actors){
-            this.actors.delete(actor.actor_id);
-            this.actorNameId.delete(actor.actor_id);
+            this.actors.delete(actor);
+            this.actorNameId.delete(actor);
         }
 
         // updated actors
@@ -110,8 +109,8 @@ export const printReplayData = (replay: Replay) => {
         const actorNameId = replay.actorNameId.get(actor_id)
         console.log(`\n\n-- Actor ${actor_id} ( ${actorNameId ? replay.actorNames[actorNameId] : actorNameId} ) --`);
 
-        for(const [object_id, attributes] of object_map){
-            console.log(`\n - Object ${replay.getObjectName(object_id)} (${object_id}) -`);
+        for(const [object_name, attributes] of object_map){
+            console.log(`\n - Object ${object_name} (${replay.getObjectIdFromName(object_name)}) -`);
             for(const [name, value] of attributes){
                 console.log(`${name}:\n${JSON.stringify(value, null, 2)}`);
             }

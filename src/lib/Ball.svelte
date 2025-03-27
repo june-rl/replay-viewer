@@ -12,7 +12,7 @@
 
 </script>
 
-<T.Mesh position={[position.x, position.z, position.y]} quaternion={[rotation.x, rotation.z, rotation.y, rotation.w]}>
+<T.Mesh position={[position.x, position.z, -position.y].map(v => v/scaleFactor)} quaternion={[rotation.x, rotation.z, -rotation.y, rotation.w]}>
     <T.SphereGeometry args={[ballRadius/scaleFactor , 32]}/>
     <T.MeshBasicMaterial />
 </T.Mesh>

@@ -10,5 +10,5 @@
 
 <T.Mesh position={[0, height/2, 0]}>
     <T.BoxGeometry args={[width, height, length]}  />
-    <T.MeshBasicMaterial transparent={true} opacity={0.4} />
+    <T.MeshBasicMaterial transparent={true} opacity={0.1} />
 </T.Mesh>
