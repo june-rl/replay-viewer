@@ -22,8 +22,6 @@ export class Replay {
     objectNames: string[] = []
     actorNames: string[] = []
 
-    currentFrame = -1;
-
     constructor(objectNames: string[], actorNames: string[], networkFrames: any[]) {
         this.objectNames = objectNames;
         this.actorNames = actorNames;
@@ -61,6 +59,23 @@ export class Replay {
             return object_map.has(objectName);
         }));
     }
+
+    findNextUpdateFrame(actorId: number, currentFrame: number, objectName?: string) {
+        for (let i = currentFrame + 1; i < this.networkFrames.length; i++) {
+            const frame = this.networkFrames[i];
+            const updated_actor = frame.updated_actors.find(actor => actor.actor_id === actorId);
+            if (updated_actor) {
+                if (objectName) {
+                    if (updated_actor.object_id === this.getObjectIdFromName(objectName)) {
+                        return i;
+                    }
+                } else {
+                    return i;
+                }
+            }
+        }
+    }
+
 
     executeFrame(frameIndex: number) {
         const frame = this.networkFrames[frameIndex];

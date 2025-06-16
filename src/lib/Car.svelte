@@ -1,6 +1,7 @@
 <script lang="ts">
 import { T } from '@threlte/core'
 import {carHitbox, scaleFactor} from "$lib/values";
+import {setFocus} from "$lib/state.svelte";
 
 interface Props {
     actorId: number
@@ -20,6 +21,7 @@ let color = objects.get("TAGame.Car_TA:TeamPaint")?.get("TeamPaint").team == 0 ?
 const handleClick = () => {
     console.log(`actor ${actorId} (car) clicked`)
     console.log(objects)
+    setFocus(actorId)
 }
 
 </script>

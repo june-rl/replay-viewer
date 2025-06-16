@@ -2,7 +2,7 @@
     import {Canvas} from "@threlte/core";
     import Scene from "$lib/Scene.svelte";
     import {createReplayFromJSON, Replay} from "$lib/Replay.js";
-    import {getCurrentFrame, setCurrentFrame} from "$lib/state.svelte";
+    import {getCurrentFrame, getFocus, setCurrentFrame} from "$lib/state.svelte";
 
     let replayFiles: FileList | null = $state(null);
     let replay: Replay | null = $state(null);
@@ -62,6 +62,11 @@
             <button onclick={() => playing = true}>Play</button>
         {/if}
         <button onclick={() => console.log(replay?.actors)}>Log actors</button>
+
+        {#if getFocus()}
+            <button onclick={() => console.log(replay?.findNextUpdateFrame(getFocus(), getCurrentFrame(), "TAGame.RBActor_TA:ReplicatedRBState"))}>Find next update frame for actor {getFocus()}</button>
+
+        {/if}
 
 
     </div>

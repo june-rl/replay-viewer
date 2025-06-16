@@ -1,3 +1,5 @@
+import type {Replay} from "$lib/Replay";
+
 let currentFrame = $state(0);
 
 export const setCurrentFrame = (frame: number) => {
